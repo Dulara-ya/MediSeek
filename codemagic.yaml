@@ -1,0 +1,55 @@
+workflows:
+  react-native-ios-android:
+    name: React Native Starter Workflow
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      # Specify your environment dependencies
+      node: 20.x
+      xcode: latest
+      cocoapods: default
+      java: 17
+      vars:
+        # UPDATE THESE to match your iOS project names
+        XCODE_WORKSPACE: "Mediseek.xcworkspace"
+        XCODE_SCHEME: "Mediseek"
+    
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          # Use yarn install or pnpm install if you aren't using npm
+          npm install
+
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios
+          pod install
+
+      - name: Build Android App Bundle (AAB)
+        script: |
+          cd android
+          # Use assembleRelease if you prefer an APK instead of an AAB
+          ./gradlew bundleRelease 
+
+      - name: Build iOS Unsigned App
+        script: |
+          cd ios
+          # Builds an unsigned release app. You will need to add code signing 
+          # certificates in the Codemagic UI to generate a valid IPA.
+          xcodebuild build -workspace "$XCODE_WORKSPACE" -scheme "$XCODE_SCHEME" -configuration Release CODE_SIGNING_ALLOWED=NO -sdk iphoneos
+
+    artifacts:
+      # These paths define where Codemagic looks for your build outputs
+      - android/app/build/outputs/**/*.aab
+      - android/app/build/outputs/**/*.apk
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      
+    publishing:
+      # You can configure email notifications for build statuses here
+      email:
+        recipients:
+          - dularasandamal2@gmail.com
+        notify:
+          success: true
+          failure: true
