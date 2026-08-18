@@ -2,7 +2,7 @@ workflows:
   web-build-workflow:
     name: Build React Vite Web App
     max_build_duration: 30
-    instance_type: linux_x2
+    instance_type: linux # <--- Updated to the free-tier instance
     environment:
       node: 20
       
@@ -16,7 +16,6 @@ workflows:
           npm run build
           
     artifacts:
-      # This grabs your compiled web files
       - dist/ 
       
     publishing:
