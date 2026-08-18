@@ -1,0 +1,10 @@
+
+{
+  "name": "MediSeek",
+  "description": "A web application to quickly find doctors and pharmacies, predict health scores, and offer an AI chatbot for support. Users can search for medical services, get health insights, and chat with an AI companion.",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera"
+  ],
+  "prompt": ""
+}
