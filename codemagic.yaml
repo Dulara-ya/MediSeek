@@ -1,6 +1,7 @@
 workflows:
   react-native-ios-android:
     name: React Native Starter Workflow
+    working_directory: mobile
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
@@ -17,6 +18,10 @@ workflows:
         script: |
           npm install
 
+      - name: Generate native directories (Expo)
+        script: |
+          npx expo prebuild
+
       - name: Install CocoaPods dependencies
         script: |
           cd ios
@@ -31,7 +36,6 @@ workflows:
         script: |
           cd ios
           xcodebuild build -workspace "$XCODE_WORKSPACE" -scheme "$XCODE_SCHEME" -configuration Release CODE_SIGNING_ALLOWED=NO -sdk iphoneos
-
     artifacts:
       - android/app/build/outputs/**/*.aab
       - android/app/build/outputs/**/*.apk
