@@ -1,7 +1,7 @@
 workflows:
   react-native-ios-android:
     name: React Native Starter Workflow
-    working_directory: mediseek # <--- Set to your mediseek folder
+    working_directory: mediseek 
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
